@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>aspnet-EasyParkingWay-D7D9A09D-B8A1-492D-AF93-5535C7CE9A14</UserSecretsId>
+    <AssemblyName>Web</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>

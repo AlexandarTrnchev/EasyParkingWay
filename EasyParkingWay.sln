@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31129.286
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebUi", "EasyParkingWay\WebUi.csproj", "{436B90CF-FDDB-4D2A-8E9A-CBEE104ED622}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web", "Web\Web.csproj", "{436B90CF-FDDB-4D2A-8E9A-CBEE104ED622}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{C1D9A590-A18B-496E-BAE7-5426E91A0A15}"
 EndProject
