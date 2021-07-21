@@ -1,18 +1,24 @@
 ﻿using EasyParkingWay.Models;
-using Microsoft.AspNetCore.Authorization;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.Cities.Queries.GetAllCitiesQuery;
 
 namespace EasyParkingWay.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class HomeController : Controller
     {
+        private IMediator _mediator;
+        protected IMediator Mediator => _mediator ??= HttpContext.RequestServices.GetService<IMediator>();
+
         private readonly ILogger<HomeController> _logger;
 
         public HomeController(ILogger<HomeController> logger)
@@ -21,9 +27,11 @@ namespace EasyParkingWay.Controllers
         }
 
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            
+            object res = await Mediator.Send(new GetAllCitiesQuery());
+            return View(res);
         }
 
         public IActionResult Privacy()
