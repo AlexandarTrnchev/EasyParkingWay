@@ -9,11 +9,6 @@ namespace Infrastructure
 {
     public static class ApplicationDbContextSeed
     {
-        /// <summary>
-        /// Seeds data in the db.
-        /// </summary>
-        /// <param name="context">DB Context</param>
-        /// <returns></returns>
         public static async Task Seed(ApplicationDbContext context
             /*UserManager<Employee> userManager*/)
         {
@@ -37,14 +32,47 @@ namespace Infrastructure
                     Created = DateTime.Now,
                 };
 
-                await context.Cities.AddRangeAsync(sofia, plovdiv, varna);
+                var burgas = new City()
+                {
+                    Name = "Burgas",
+                    Created = DateTime.Now
+                };
+
+                var ruse = new City()
+                {
+                    Name = "Ruse",
+                    Created = DateTime.Now
+                };
+
+                var blgrad = new City()
+                {
+                    Name = "Blagoevgrad",
+                    Created = DateTime.Now
+                };
+                await context.Cities.AddRangeAsync(sofia, plovdiv, varna, burgas, ruse, blgrad);
                 //await context.SaveChangesAsync(CancellationToken.None);
 
-                var parkingSofia = new Parking()
+                var parkingSofia_1 = new Parking()
                 {
-                    Name = "Parking Sofia",
+                    Name = "Parking Sofia_1",
                     Created = DateTime.Now,
                     Address = "some street 29",
+                    City = sofia
+                };
+
+                var parkingSofia_2 = new Parking()
+                {
+                    Name = "Parking Sofia_2",
+                    Created = DateTime.Now,
+                    Address = "some street 28",
+                    City = sofia
+                };
+
+                var parkingSofia_3 = new Parking()
+                {
+                    Name = "Parking Sofia_3",
+                    Created = DateTime.Now,
+                    Address = "some street 30",
                     City = sofia
                 };
 
@@ -53,7 +81,7 @@ namespace Infrastructure
                     Name = "Parking Plovdiv",
                     Created = DateTime.Now,
                     Address = "some street 29",
-                    City = sofia
+                    City = plovdiv
                 };
 
                 var parkingVarna = new Parking()
@@ -61,10 +89,10 @@ namespace Infrastructure
                     Name = "Parking Varna",
                     Created = DateTime.Now,
                     Address = "some street 29",
-                    City = sofia
+                    City = varna
                 };
 
-                await context.Parkings.AddRangeAsync(parkingSofia, parkingPlovdiv, parkingVarna);
+                await context.Parkings.AddRangeAsync(parkingSofia_1, parkingSofia_2, parkingSofia_3, parkingPlovdiv, parkingVarna);
 
                 for (int i = 1; i < 50; i++)
                 {
@@ -72,7 +100,7 @@ namespace Infrastructure
                     {
                         Number = $"Place {i}",
                         Created = DateTime.Now,
-                        Parking = parkingSofia,
+                        Parking = i % 2 == 0 ? parkingSofia_1 : parkingSofia_2,
                         IsFree = true
                     };
 

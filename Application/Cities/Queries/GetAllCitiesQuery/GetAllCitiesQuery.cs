@@ -30,22 +30,21 @@ namespace Application.Cities.Queries.GetAllCitiesQuery
 
         public async Task<CitiesListModel> Handle(GetAllCitiesQuery request, CancellationToken cancellationToken)
         {
-            //var entities = await _context
-            //   .Cities
-            //   .ProjectTo<CityDto>(_mapper.ConfigurationProvider)
-            //   .AsNoTracking()
-            //   .ToListAsync();
+            var entities = await _context
+               .Cities
+               .ProjectTo<CityDto>(_mapper.ConfigurationProvider)
+               .AsNoTracking()
+               .ToListAsync();
 
-            //if (entities == null)
-            //{
-            //    throw new ArgumentException();
-            //}
+            if (entities == null)
+            {
+                throw new ArgumentException();
+            }
 
-            //return new CitiesListModel
-            //{
-            //    Cities = entities
-            //};
-            return null;
+            return new CitiesListModel
+            {
+                Cities = entities
+            };
         }
     }
 }

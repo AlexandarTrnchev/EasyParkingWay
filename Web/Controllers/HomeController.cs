@@ -10,6 +10,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.Cities.Queries.GetAllCitiesQuery;
+using Application.Cities.Queries.GetCityByIdQuery;
 
 namespace EasyParkingWay.Controllers
 {
@@ -31,6 +32,13 @@ namespace EasyParkingWay.Controllers
         {
             
             object res = await Mediator.Send(new GetAllCitiesQuery());
+            return View(res);
+        }
+
+        public async Task<IActionResult> GetCityById(int id)
+        {
+
+            object res = await Mediator.Send(new GetCityByIdQuery { Id = id});
             return View(res);
         }
 

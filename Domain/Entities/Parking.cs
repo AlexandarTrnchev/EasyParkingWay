@@ -9,6 +9,12 @@ namespace Domain.Entities
 
         public string Address { get; set; }
 
+        public decimal longitude { get; set; }
+
+        public decimal Latitude { get; set; }
+
+        public string ImageUrl { get; set; }
+
         public int CityId { get; set; }
 
         public City City { get; set; }

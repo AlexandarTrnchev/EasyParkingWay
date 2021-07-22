@@ -7,9 +7,23 @@
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <h3>Please choose city</h3>
+    <br />
+</div>
 
+<div class="row">
     @foreach (var item in Model.Cities)
     {
-        <p>@item.Name</p>
+        var availableParkings = item.Parkings.Count > 1 ? "Parkings" : "Parking";
+
+        <div class="col-6" style="width: 18rem; margin-bottom: 25px;">
+            <div class="card">
+                @*<img class="card-img-top" src="..." alt="Card image cap">*@
+                <div class="card-body">
+                    <h5 class="card-title">@item.Name</h5>
+                    <p class="card-text">Available @item.Parkings.Count @availableParkings</p>
+                    <a href="/Home/GetCityById?id=@item.Id" class="btn btn-primary">See details</a>
+                </div>
+            </div>
+        </div>
     }
 </div>
