@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Data;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -16,7 +17,7 @@ namespace Infrastructure
         private readonly IIdentityService _identityService;
         private IDbContextTransaction _currentTransaction;
 
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IIdentityService identityService)
+        public ApplicationDbContext([NotNull] DbContextOptions options, IIdentityService identityService)
             : base(options)
         {
             _identityService = identityService;

@@ -1,9 +1,15 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-@model string
+
+@model Application.Cities.Models.CitiesListModel
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
-    <p>Alex Home @Model</p>
+    <h3>Please choose city</h3>
+
+    @foreach (var item in Model.Cities)
+    {
+        <p>@item.Name</p>
+    }
 </div>
