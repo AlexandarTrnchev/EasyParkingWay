@@ -16,15 +16,15 @@ namespace Application.Cities.Queries.GetAllCitiesQuery
 
     public class GetAllQueryHandler : IRequestHandler<GetAllCitiesQuery, CitiesListModel>
     {
-        //private readonly IApplicationDbContext _context;
+        private readonly IApplicationDbContext _context;
         private readonly IMapper _mapper;
 
         public GetAllQueryHandler(
-            //IApplicationDbContext context,
+            IApplicationDbContext context,
             IMapper mapper
             )
         {
-            //_context = context;
+            _context = context;
             _mapper = mapper;
         }
 

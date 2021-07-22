@@ -1,5 +1,6 @@
 ﻿using Application.Common.Interfaces;
 using Infrastructure.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,20 +15,23 @@ namespace Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    configuration.GetConnectionString("DefaultConnection")));
             //services.AddDbContext<IApplicationDbContext, ApplicationDbContext>(options =>
-            //        options.UseSqlServer(
-            //            configuration.GetConnectionString("DefaultConnection"),
-            //                b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)
-            //        ), ServiceLifetime.Transient);
+            //    options.UseSqlServer(
+            //        configuration.GetConnectionString("DefaultConnection")));
+
+
+            services.AddDbContext<ApplicationDbContext>(options =>
+                    options.UseSqlServer(
+                        configuration.GetConnectionString("DefaultConnection"),
+                            b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)
+                    ), ServiceLifetime.Transient);
 
             //services.AddAuthentication(AzureADDefaults.JwtBearerAuthenticationScheme)
             //    .AddAzureADBearer(options => configuration.Bind("AzureAd", options));
 
             IdentityModelEventSource.ShowPII = true;
 
+            services.AddTransient<IApplicationDbContext, ApplicationDbContext>();
             services.AddTransient<IIdentityService, IdentityService>();
                     //.AddTransient<IQueryService, QueryService>()
                     //.AddTransient<QueryBuilder>()
