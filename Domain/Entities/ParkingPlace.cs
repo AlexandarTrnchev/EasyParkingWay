@@ -10,10 +10,6 @@ namespace Domain.Entities
 
         public bool IsFree { get; set; }
 
-        public DateTime RentFrom { get; set; }
-
-        public DateTime RentTo { get; set; }
-
         public int ParkingId { get; set; }
 
         public Parking Parking { get; set; }

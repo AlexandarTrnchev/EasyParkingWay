@@ -12,10 +12,6 @@ namespace Application.ParkingPlaces.Models
 
         public bool IsFree { get; set; }
 
-        public DateTime RentFrom { get; set; }
-
-        public DateTime RentTo { get; set; }
-
         public List<Payment> Payments { get; set; }
     }
 }

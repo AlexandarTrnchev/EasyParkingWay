@@ -52,5 +52,10 @@ namespace Application.ParkingPlaces.Queries.GetAllParkingPlacesByParkingIdQuery
 
             return new ParkingPlaceDtoListModel { ParkingPlaces = places , Parking = parking };
         }
+
+        //private LinkedList<ParkingPlaceDto> IsFreeForPeriod(LinkedList<ParkingPlaceDto> listData, DateTime? from, DateTime? to)
+        //{
+            
+        //}
     }
 }
