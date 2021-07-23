@@ -1,10 +1,12 @@
-﻿using Domain.Common;
+﻿using Application.Common.Mappings;
+using Domain.Entities;
 using System;
 using System.Collections.Generic;
+using System.Text;
 
-namespace Domain.Entities
+namespace Application.ParkingPlaces.Models
 {
-    public class ParkingPlace : AuditableEntity
+    public class ParkingPlaceDto : IMapFrom<ParkingPlace>
     {
         public int Number { get; set; }
 
@@ -13,10 +15,6 @@ namespace Domain.Entities
         public DateTime RentFrom { get; set; }
 
         public DateTime RentTo { get; set; }
-
-        public int ParkingId { get; set; }
-
-        public Parking Parking { get; set; }
 
         public List<Payment> Payments { get; set; }
     }

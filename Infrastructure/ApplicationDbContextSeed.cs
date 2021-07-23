@@ -96,17 +96,33 @@ namespace Infrastructure
 
                 for (int i = 1; i < 50; i++)
                 {
-                    var parkingPlaceSofia = new ParkingPlace()
+                    var parkingPlaceSofia_1 = new ParkingPlace()
                     {
-                        Number = $"Place {i}",
+                        Number = i,
                         Created = DateTime.Now,
-                        Parking = i % 2 == 0 ? parkingSofia_1 : parkingSofia_2,
+                        Parking = parkingSofia_1,
+                        IsFree = i == 2 ? false : true
+                    };
+
+                    var parkingPlaceSofia_2 = new ParkingPlace()
+                    {
+                        Number = i,
+                        Created = DateTime.Now,
+                        Parking = parkingSofia_2,
+                        IsFree = true
+                    };
+
+                    var parkingPlaceSofia_3 = new ParkingPlace()
+                    {
+                        Number = i,
+                        Created = DateTime.Now,
+                        Parking = parkingSofia_3,
                         IsFree = true
                     };
 
                     var parkingPlacePlovdiv = new ParkingPlace()
                     {
-                        Number = $"Place {i}",
+                        Number = i,
                         Created = DateTime.Now,
                         Parking = parkingPlovdiv,
                         IsFree = true
@@ -114,13 +130,13 @@ namespace Infrastructure
 
                     var parkingPlaceVarna = new ParkingPlace()
                     {
-                        Number = $"Place {i}",
+                        Number = i,
                         Created = DateTime.Now,
                         Parking = parkingVarna,
                         IsFree = true
                     };
 
-                    await context.ParkingPlaces.AddRangeAsync(parkingPlaceSofia, parkingPlacePlovdiv, parkingPlaceVarna);
+                    await context.ParkingPlaces.AddRangeAsync(parkingPlaceSofia_1, parkingPlaceSofia_2, parkingPlaceSofia_3, parkingPlacePlovdiv, parkingPlaceVarna);
                 }
               
                 await context.SaveChangesAsync(CancellationToken.None);

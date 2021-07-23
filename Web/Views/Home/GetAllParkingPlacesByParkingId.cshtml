@@ -1,0 +1,49 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model Application.ParkingPlaces.Models.ParkingPlaceDtoListModel
+
+
+<div class="text-center">
+    <h1 class="display-4">@Model.Parking?.City.Name</h1>
+    <h2 class="display-4">@Model.Parking?.Name</h2>
+    @if (Model.ParkingPlaces != null && Model.ParkingPlaces.Count > 0)
+    {
+        <h3>Please choose parking place </h3>
+    }
+    else
+    {
+        <h3 class="alert-danger">Not have available parking places in this city</h3>
+    }
+    <br />
+</div>
+
+<div class="row">
+    @if (Model.ParkingPlaces != null)
+    {
+        @foreach (var item in Model.ParkingPlaces)
+            {
+                var backgroundStyle = item.IsFree ? "btn-success" : "btn-danger";
+
+            <div class="col-6 " style="width: 18rem; margin-bottom: 25px;">
+                <div class="card">
+                    @*<img class="card-img-top" src="..." alt="Card image cap">*@
+                    <div class="card-body">
+                        <h5 class="card-title">Place number @item.Number</h5>
+                        @if (!item.IsFree)
+                        {
+                            <h6 class="card-text">Rent To: @item.RentTo.Date.ToShortDateString()</h6>
+                        }
+                        else
+                        {
+                            <h6 class="card-text">Rent To: N/A</h6>
+                        }
+
+                        <a href="#" class="btn @backgroundStyle" style="margin-top:20px">Book your parking place</a>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+
+</div>

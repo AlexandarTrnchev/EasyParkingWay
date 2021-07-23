@@ -11,6 +11,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Application.Cities.Queries.GetAllCitiesQuery;
 using Application.Cities.Queries.GetCityByIdQuery;
+using Application.Parkings.Queries.GetallParkingsByCityIdQuery;
+using Application.ParkingPlaces.Queries.GetAllParkingPlacesByParkingIdQuery;
 
 namespace EasyParkingWay.Controllers
 {
@@ -41,6 +43,24 @@ namespace EasyParkingWay.Controllers
             object res = await Mediator.Send(new GetCityByIdQuery { Id = id});
             return View(res);
         }
+
+        public async Task<IActionResult> GetAllParkingsByCityId(int cityId)
+        {
+            //ToDo:
+            object res = await Mediator.Send(new GetAllParkingsByCityIdQuery { CityId = cityId});
+            return View(res);
+        }
+        
+        public async Task<IActionResult> GetAllParkingPlacesByParkingId(int parkingId)
+        {
+            object res = await Mediator.Send(new GetAllParkingPlacesByParkingIdQuery { ParkingId = parkingId});
+            return View(res);
+        }
+
+
+
+
+
 
         public IActionResult Privacy()
         {
