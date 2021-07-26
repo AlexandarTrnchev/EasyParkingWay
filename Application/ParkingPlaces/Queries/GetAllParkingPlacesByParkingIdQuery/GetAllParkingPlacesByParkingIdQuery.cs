@@ -3,6 +3,7 @@ using Application.ParkingPlaces.Models;
 using Application.Parkings.Models;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -16,6 +17,11 @@ namespace Application.ParkingPlaces.Queries.GetAllParkingPlacesByParkingIdQuery
     public class GetAllParkingPlacesByParkingIdQuery : IRequest<ParkingPlaceDtoListModel>
     {
         public int ParkingId { get; set; }
+
+        public DateTime? From { get; set; }
+
+        public DateTime? To { get; set; }
+
     }
 
     public class GetAllParkingPlacesByParkingIdQueryHandler : IRequestHandler<GetAllParkingPlacesByParkingIdQuery, ParkingPlaceDtoListModel>
@@ -36,7 +42,8 @@ namespace Application.ParkingPlaces.Queries.GetAllParkingPlacesByParkingIdQuery
         {
             var parkingEntity = await _context
                .Parkings
-               .Include(x => x.ParkingPlaces)
+               .Include(pp => pp.ParkingPlaces)
+               .ThenInclude(p => p.Payments)
                .Include(x => x.City)
                .FirstOrDefaultAsync(x => x.Id == request.ParkingId);
 
@@ -49,13 +56,35 @@ namespace Application.ParkingPlaces.Queries.GetAllParkingPlacesByParkingIdQuery
                 .OrderBy(x => x.Number)
                 .ToList();
 
+            DateTime date1 = (request.From == null || request.From < DateTime.Now.Date) ? DateTime.Now.Date : (DateTime)request.From;
+            DateTime date2 = (request.To == null || request.To < DateTime.Now.Date) ? DateTime.Now.Date : (DateTime)request.To;
 
-            return new ParkingPlaceDtoListModel { ParkingPlaces = places , Parking = parking };
+            var dates = new List<DateTime> { date1, date2 }.OrderBy(x => x).ToList();
+
+            foreach (var item in places)
+            {
+                if (item.Payments.Any(x => IsFreeForPeriod(x, dates[0], dates[1])))
+                {
+                    item.IsFree = false;
+                }
+                else
+                {
+                    item.IsFree = true;
+                }
+            }
+
+            return new ParkingPlaceDtoListModel 
+            { 
+                ParkingPlaces = places, 
+                Parking = parking,
+                From = dates[0],
+                To = dates[1],
+            };
         }
 
-        //private LinkedList<ParkingPlaceDto> IsFreeForPeriod(LinkedList<ParkingPlaceDto> listData, DateTime? from, DateTime? to)
-        //{
-            
-        //}
+        private bool IsFreeForPeriod(Payment payment, DateTime requestFrom, DateTime requestTo)
+        {
+            return (requestFrom >= payment.RentFrom && requestFrom <= payment.RentTo) || (requestTo >= payment.RentFrom && requestTo <= payment.RentTo);
+        }
     }
 }

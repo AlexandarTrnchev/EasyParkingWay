@@ -7,6 +7,8 @@ namespace Domain.Entities
     {
         public int ParkingPlaceId { get; set; }
 
+        public string UserId { get; set; }
+
         public ParkingPlace ParkingPlace { get; set; }
 
         public DateTime? RentFrom { get; set; }

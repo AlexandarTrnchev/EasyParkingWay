@@ -101,7 +101,6 @@ namespace Infrastructure
                         Number = i,
                         Created = DateTime.Now,
                         Parking = parkingSofia_1,
-                        IsFree = i == 2 ? false : true
                     };
 
                     var parkingPlaceSofia_2 = new ParkingPlace()
@@ -109,7 +108,6 @@ namespace Infrastructure
                         Number = i,
                         Created = DateTime.Now,
                         Parking = parkingSofia_2,
-                        IsFree = true
                     };
 
                     var parkingPlaceSofia_3 = new ParkingPlace()
@@ -117,7 +115,6 @@ namespace Infrastructure
                         Number = i,
                         Created = DateTime.Now,
                         Parking = parkingSofia_3,
-                        IsFree = true
                     };
 
                     var parkingPlacePlovdiv = new ParkingPlace()
@@ -125,7 +122,6 @@ namespace Infrastructure
                         Number = i,
                         Created = DateTime.Now,
                         Parking = parkingPlovdiv,
-                        IsFree = true
                     };
 
                     var parkingPlaceVarna = new ParkingPlace()
@@ -133,7 +129,6 @@ namespace Infrastructure
                         Number = i,
                         Created = DateTime.Now,
                         Parking = parkingVarna,
-                        IsFree = true
                     };
 
                     await context.ParkingPlaces.AddRangeAsync(parkingPlaceSofia_1, parkingPlaceSofia_2, parkingPlaceSofia_3, parkingPlacePlovdiv, parkingPlaceVarna);

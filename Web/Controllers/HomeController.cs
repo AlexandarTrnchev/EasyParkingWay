@@ -51,16 +51,11 @@ namespace EasyParkingWay.Controllers
             return View(res);
         }
         
-        public async Task<IActionResult> GetAllParkingPlacesByParkingId(int parkingId)
+        public async Task<IActionResult> GetAllParkingPlacesByParkingId(int parkingId,  DateTime? from, DateTime? to)
         {
-            object res = await Mediator.Send(new GetAllParkingPlacesByParkingIdQuery { ParkingId = parkingId});
+            object res = await Mediator.Send(new GetAllParkingPlacesByParkingIdQuery { ParkingId = parkingId, From = from, To = to});
             return View(res);
         }
-
-
-
-
-
 
         public IActionResult Privacy()
         {

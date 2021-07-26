@@ -8,8 +8,6 @@ namespace Domain.Entities
     {
         public int Number { get; set; }
 
-        public bool IsFree { get; set; }
-
         public int ParkingId { get; set; }
 
         public Parking Parking { get; set; }
