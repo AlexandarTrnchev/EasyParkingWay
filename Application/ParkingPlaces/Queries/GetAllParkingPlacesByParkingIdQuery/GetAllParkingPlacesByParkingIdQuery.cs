@@ -63,7 +63,7 @@ namespace Application.ParkingPlaces.Queries.GetAllParkingPlacesByParkingIdQuery
 
             foreach (var item in places)
             {
-                if (item.Payments.Any(x => IsFreeForPeriod(x, dates[0], dates[1])))
+                if (item.Payments.Any(x => IsFreeForPeriod(x, dates[0].Date, dates[1].Date)))
                 {
                     item.IsFree = false;
                 }
@@ -84,7 +84,7 @@ namespace Application.ParkingPlaces.Queries.GetAllParkingPlacesByParkingIdQuery
 
         private bool IsFreeForPeriod(Payment payment, DateTime requestFrom, DateTime requestTo)
         {
-            return (requestFrom >= payment.RentFrom && requestFrom <= payment.RentTo) || (requestTo >= payment.RentFrom && requestTo <= payment.RentTo);
+            return (requestFrom.Date >= payment.RentFrom.Value.Date && requestFrom.Date <= payment.RentTo.Value.Date) || (requestTo.Date >= payment.RentFrom.Value.Date && requestTo.Date <= payment.RentTo.Value.Date);
         }
     }
 }

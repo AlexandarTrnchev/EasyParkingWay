@@ -1,6 +1,7 @@
 using Application.Common.Interfaces;
 using Infrastructure;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,6 +18,8 @@ namespace EasyParkingWay
     {
         public async static Task Main(string[] args)
         {
+            
+
             IHost host;
             try
             {
@@ -41,6 +44,9 @@ namespace EasyParkingWay
 
             using (var scope = host.Services.CreateScope())
             {
+                //var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+
                 var services = scope.ServiceProvider;
 
                 try
@@ -52,7 +58,7 @@ namespace EasyParkingWay
                         context.Database.Migrate();
                     }
 
-                    await ApplicationDbContextSeed.Seed(context);
+                    await ApplicationDbContextSeed.Seed(context, userManager);
                 }
                 catch (Exception ex)
                 {

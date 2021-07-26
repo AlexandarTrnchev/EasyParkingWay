@@ -1,0 +1,28 @@
+﻿@{
+}
+
+
+
+<div class="row">
+    @*<input type="hidden" class="form-control" name="parkingId" value="@Model.Parking?.Id">*@
+    <div class="col-8">
+        <img src="~/images/borika.jpg" asp-append-version="true">
+    </div>
+    <div class="col-3">
+        <div style="margin-top:20px">
+            <label>Period From: @DateTime.Now.ToShortDateString()</label><br />
+            <label>Period To: @DateTime.Now.ToShortDateString()</label><br />
+            <label>City: Sofia</label><br />
+            <label>Parking: Some Parking</label><br />
+            <label>Address: Seome address 28</label><br />
+        </div>
+        <input type="submit" class="btn btn-primary" value="Pay" style="margin-top:20px" />
+    </div>
+</div>
+
+<style>
+    img {
+        width: 100%;
+        height: auto;
+    }
+</style>

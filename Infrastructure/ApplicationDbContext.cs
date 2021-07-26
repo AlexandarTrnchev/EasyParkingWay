@@ -31,6 +31,8 @@ namespace Infrastructure
 
         public DbSet<Payment> Payments { get; set; }
 
+        public DbSet<Configuration> Configurations { get; set; }
+
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
