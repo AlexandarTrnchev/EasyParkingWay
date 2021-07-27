@@ -27,7 +27,7 @@ namespace Application.Payments.Command
 
         public async Task<bool> Handle(AddPaymentCommand request, CancellationToken cancellationToken)
         {
-            
+            //ToDo Need to be add Validation
             var entity = new Payment();
 
             entity.Amount = request.PaymentModel.Amount;

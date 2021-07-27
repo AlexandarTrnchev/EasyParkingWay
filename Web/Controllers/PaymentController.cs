@@ -32,11 +32,12 @@ namespace Web.Controllers
             return View(paymentModel);
         }
 
-        public async Task<IActionResult> Paymant(PaymentModel paymentModel)
+        [HttpPost]
+        public async Task<IActionResult> Payment([FromForm]PaymentModel paymentModel)
         {
-            //UserId = _userManager.GetUserId()
-            object res = await Mediator.Send(new AddPaymentCommand { PaymentModel = paymentModel});
-            return View(res);
+            var userId = _userManager.GetUserId(HttpContext.User);
+            object res = await Mediator.Send(new AddPaymentCommand { PaymentModel = paymentModel, UserId = userId });
+            return RedirectToAction("GetAllParkingPlacesByParkingId", "Home", new { parkingId = paymentModel.ParkingId});
         }
     }
 }

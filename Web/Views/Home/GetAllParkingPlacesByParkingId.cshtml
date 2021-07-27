@@ -71,10 +71,12 @@
                         @{ 
                             var paymentModel = new PaymentModel
                             {
+                                ParkingId = Model.Parking.Id,
                                 Address = Model.Parking.Address,
                                 Amount = 35,
                                 City = Model.Parking.City.Name,
                                 ParkingName = Model.Parking.Name,
+                                ParkingNumber = item.Number,
                                 RentFrom = Model.From,
                                 RentTo = Model.To,
                                 ParkingPlaceId = item.Id

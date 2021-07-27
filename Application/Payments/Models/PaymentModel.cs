@@ -10,7 +10,11 @@ namespace Application.Payments.Models
 
         public string  ParkingName { get; set; }
 
+        public int  ParkingNumber { get; set; }
+
         public int  ParkingPlaceId{ get; set; }
+
+        public int  ParkingId{ get; set; }
 
         public string  Address { get; set; }
 
