@@ -1,4 +1,5 @@
-﻿@model Application.ParkingPlaces.Models.ParkingPlaceDtoListModel
+﻿@using Application.Payments.Models
+@model Application.ParkingPlaces.Models.ParkingPlaceDtoListModel
 
 <div class="text-center">
     <h1 class="display-4">@Model.Parking?.City.Name</h1>
@@ -67,8 +68,19 @@
                         {
                             <h6 class="card-text">Rent To: N/A</h6>
                         }
-
-                          <a href="@Url.Action("Index", "Payment", new { name = "John"})" class="btn @backgroundStyle" style="margin-top:20px">Book your parking place</a>
+                        @{ 
+                            var paymentModel = new PaymentModel
+                            {
+                                Address = Model.Parking.Address,
+                                Amount = 35,
+                                City = Model.Parking.City.Name,
+                                ParkingName = Model.Parking.Name,
+                                RentFrom = Model.From,
+                                RentTo = Model.To,
+                                ParkingPlaceId = item.Id
+                            };
+                        }
+                          <a href="@Url.Action("Index", "Payment", paymentModel)" class="btn @backgroundStyle" style="margin-top:20px">Book your parking place</a>
                       
                     </div>
                 </div>

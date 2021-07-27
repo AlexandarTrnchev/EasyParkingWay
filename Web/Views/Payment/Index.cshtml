@@ -1,5 +1,4 @@
-﻿@{
-}
+﻿@model Application.Payments.Models.PaymentModel;
 
 
 
@@ -10,11 +9,11 @@
     </div>
     <div class="col-3">
         <div style="margin-top:20px">
-            <label>Period From: @DateTime.Now.ToShortDateString()</label><br />
-            <label>Period To: @DateTime.Now.ToShortDateString()</label><br />
-            <label>City: Sofia</label><br />
-            <label>Parking: Some Parking</label><br />
-            <label>Address: Seome address 28</label><br />
+            <label>Period From: @Model.RentFrom.ToShortDateString()</label><br />
+            <label>Period To: @Model.RentTo.ToShortDateString()</label><br />
+            <label>City: @Model.City</label><br />
+            <label>Parking:@Model.ParkingName</label><br />
+            <label>Address: @Model.Address</label><br />
         </div>
         <input type="submit" class="btn btn-primary" value="Pay" style="margin-top:20px" />
     </div>

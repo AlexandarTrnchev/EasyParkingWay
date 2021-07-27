@@ -6,6 +6,8 @@ namespace Application.ParkingPlaces.Models
 {
     public class ParkingPlaceDto : IMapFrom<ParkingPlace>
     {
+        public int Id { get; set; }
+
         public int Number { get; set; }
 
         public bool IsFree { get; set; }
