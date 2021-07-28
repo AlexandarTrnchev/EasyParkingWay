@@ -32,8 +32,17 @@ namespace Application.Payments.Command
             var payments = await _dbContext.Payments
                 .Where(x => x.ParkingPlaceId == request.PaymentModel.ParkingPlaceId)
                 .ToListAsync();
+            var isFree = false;
 
-            var isFree = payments.Any(x => IsFreeForPeriod(x, request.PaymentModel.RentFrom, request.PaymentModel.RentTo));
+            if (payments.Count > 0)
+            {
+               isFree = payments.Any(x => IsFreeForPeriod(x, request.PaymentModel.RentFrom, request.PaymentModel.RentTo));
+            }
+            else
+            {
+                isFree = true;
+            }
+
 
             if (!isFree)
             {

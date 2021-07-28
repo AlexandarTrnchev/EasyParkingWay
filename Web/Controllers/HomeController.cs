@@ -16,7 +16,7 @@ using Application.ParkingPlaces.Queries.GetAllParkingPlacesByParkingIdQuery;
 
 namespace EasyParkingWay.Controllers
 {
-    //[Authorize]
+    [AllowAnonymous]
     public class HomeController : Controller
     {
         private IMediator _mediator;
@@ -28,7 +28,6 @@ namespace EasyParkingWay.Controllers
         {
             _logger = logger;
         }
-
 
         public async Task<IActionResult> Index()
         {

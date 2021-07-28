@@ -2,6 +2,7 @@ using Application;
 using Application.Common.Interfaces;
 using EasyParkingWay.Data;
 using Infrastructure;
+using Infrastructure.Enums;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -52,10 +53,12 @@ namespace EasyParkingWay
                 .AddDefaultTokenProviders();
 
             services.AddAuthorization(options => {
-                options.AddPolicy("readpolicy",
-                    builder => builder.RequireRole("Admin", "User"));
-                options.AddPolicy("writepolicy",
-                    builder => builder.RequireRole("Admin"));
+
+                options.AddPolicy(nameof(IdentityPolicyEnum.ReadPolicy),
+                    builder => builder.RequireRole(nameof(IdentityRoleEnum.Admin), nameof(IdentityRoleEnum.User)));
+
+                options.AddPolicy(nameof(IdentityPolicyEnum.WritePolicy),
+                    builder => builder.RequireRole(nameof(IdentityRoleEnum.Admin)));
             });
 
             services.AddControllersWithViews()

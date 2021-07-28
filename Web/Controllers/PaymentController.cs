@@ -8,10 +8,11 @@ using System.Threading.Tasks;
 using Application.Payments.Models;
 using Application.Payments.Command;
 using Microsoft.AspNetCore.Identity;
+using Infrastructure.Enums;
 
 namespace Web.Controllers
 {
-    [Authorize]
+    [Authorize(Policy = nameof(IdentityPolicyEnum.ReadPolicy))]
     public class PaymentController : Controller
     {
         private IMediator _mediator;
@@ -38,10 +39,10 @@ namespace Web.Controllers
             var result = await Mediator.Send<bool>(new AddPaymentCommand { PaymentModel = paymentModel, UserId = userId });
             if (!result)
             {
-                return View("Home");
+                return RedirectToAction("Index", "Home");
             }
 
-            return RedirectToAction("GetAllParkingPlacesByParkingId", "Home", new { parkingId = paymentModel.ParkingId, createPayment = true});
+            return RedirectToAction("GetAllParkingPlacesByParkingId", "Home", new { parkingId = paymentModel.ParkingId, createPayment="success" });
         }
     }
 }

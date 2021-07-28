@@ -11,6 +11,7 @@ namespace Application.ParkingPlaces.Models
         public DateTime To { get; set; }
 
         public ParkingDto Parking { get; set; }
+
         public List<ParkingPlaceDto> ParkingPlaces { get; set; }
     }
 }

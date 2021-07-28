@@ -46,6 +46,8 @@ namespace EasyParkingWay
             {
                 //var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
                 var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+                var rolManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
 
                 var services = scope.ServiceProvider;
 
@@ -58,7 +60,7 @@ namespace EasyParkingWay
                         context.Database.Migrate();
                     }
 
-                    await ApplicationDbContextSeed.Seed(context, userManager);
+                    await ApplicationDbContextSeed.Seed(context, userManager, rolManager);
                 }
                 catch (Exception ex)
                 {

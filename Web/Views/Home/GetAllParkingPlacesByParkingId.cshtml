@@ -1,6 +1,12 @@
 ﻿@using Application.Payments.Models
 @model Application.ParkingPlaces.Models.ParkingPlaceDtoListModel
 
+@{ 
+    var createPaymentSuccess = Context.Request.Query["createPayment"];
+}
+
+<input type="hidden" id="payment-success" value="@createPaymentSuccess" />
+
 <div class="text-center">
     <h1 class="display-4">@Model.Parking?.City.Name</h1>
     <h2 class="display-4">@Model.Parking?.Name</h2>
@@ -15,6 +21,34 @@
     <br />
 </div>
 
+<button id="modal-button" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" hidden>
+    Open modal
+</button>
+
+<!-- The Modal -->
+<div class="modal" id="myModal" >
+    <div class="modal-dialog" >
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Success</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                You made successfully booking parking place!
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
 <form asp-controller="Home" asp-action="GetAllParkingPlacesByParkingId" method="get">
 
     <div class="row pb-5">
@@ -87,7 +121,7 @@
 
                         @if (item.IsFree)
                         {
-                            <a href="@Url.Action("Index", "Payment", paymentModel)" class="book-button btn @backgroundStyle" >Book your parking place</a>
+                            <a href="@Url.Action("Index", "Payment", paymentModel)" class="book-button btn @backgroundStyle">Book your parking place</a>
                         }
                         else
                         {
@@ -101,6 +135,19 @@
 
 </div>
 
+<script>
+    let isSuccesseee = $("#payment-success").val();
+    let isSuccess = $("#payment-success").val() === "success";
+
+    $(document).ready(function () {
+        debugger;
+        if (isSuccess) {
+            $("#modal-button").click();
+        }
+    });
+</script>
+
+
 <style>
     .search-button {
         margin-top: 25px;
@@ -108,6 +155,14 @@
 
     .book-button {
         margin-top: 20px
+    }
+
+    .modal-dialog {
+        position: unset;
+    }
+
+    .modal-content {
+        background-color: lightgreen;
     }
 </style>
 

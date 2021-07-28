@@ -1,5 +1,6 @@
 ﻿using Application.Common.Interfaces;
 using Domain.Entities;
+using Infrastructure.Enums;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using System;
@@ -12,13 +13,26 @@ namespace Infrastructure
     public static class ApplicationDbContextSeed
     {
  
-        public static async Task Seed(ApplicationDbContext context, UserManager<IdentityUser> userManager)
+        public static async Task Seed(ApplicationDbContext context, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             if (!context.Cities.Any())
             {
-                var rols = new IdentityRole {Name = "" }
-                var user = new IdentityUser { UserName = "admin@abv.bg", Email = "admin@abv.bg" };
-                var result = await userManager.CreateAsync(user, "123456");
+                //add rols
+                var rolAdmin = new IdentityRole { Name = nameof(IdentityRoleEnum.Admin) };
+                var rolUser = new IdentityRole { Name = nameof(IdentityRoleEnum.User) };
+                await roleManager.CreateAsync(rolAdmin);
+                await roleManager.CreateAsync(rolUser);
+
+                //add users
+                var admin = new IdentityUser { UserName = "admin@abv.bg", Email = "admin@abv.bg" };
+                var result = await userManager.CreateAsync(admin, "123456");
+
+                var user = new IdentityUser { UserName = "user@abv.bg", Email = "user@abv.bg" };
+                await userManager.CreateAsync(user, "123456");
+
+                await userManager.AddToRoleAsync(admin, rolAdmin.Name);
+                await userManager.AddToRoleAsync(user, rolUser.Name);
+
                 if (result.Succeeded)
                 {
 
