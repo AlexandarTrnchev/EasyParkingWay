@@ -40,7 +40,7 @@
         </div>
 
         <div class="col-4">
-            <input type="submit" class="btn btn-primary" value="Search" />
+            <input type="submit" class="search-button btn btn-primary" value="Search" />
             @*<a href="#" class="btn btn-primary">Search </a>*@
         </div>
     </div>
@@ -62,13 +62,13 @@
                         <h5 class="card-title">Place number @item.Number</h5>
                         @if (!item.IsFree)
                         {
-                            <h6 class="card-text">Rent To: ToDo</h6>
+                            <h5 class="card-text">This parking place is not free From @Model.From.ToShortDateString() To @Model.To.ToShortDateString()</h5>
                         }
                         else
                         {
-                            <h6 class="card-text">Rent To: N/A</h6>
+                            <h5 class="card-text">This parking place is availavale for booking</h5>
                         }
-                        @{ 
+                        @{
                             var paymentModel = new PaymentModel
                             {
                                 ParkingId = Model.Parking.Id,
@@ -81,9 +81,18 @@
                                 RentTo = Model.To,
                                 ParkingPlaceId = item.Id
                             };
+
+                            var bookButtonUrl = item.IsFree ? Url.Action("Index", "Payment", paymentModel) : "";
                         }
-                          <a href="@Url.Action("Index", "Payment", paymentModel)" class="btn @backgroundStyle" style="margin-top:20px">Book your parking place</a>
-                      
+
+                        @if (item.IsFree)
+                        {
+                            <a href="@Url.Action("Index", "Payment", paymentModel)" class="book-button btn @backgroundStyle" >Book your parking place</a>
+                        }
+                        else
+                        {
+                            <button class="book-button btn @backgroundStyle" disabled>This place is Not free</button>
+                        }
                     </div>
                 </div>
             </div>
@@ -91,4 +100,14 @@
     }
 
 </div>
+
+<style>
+    .search-button {
+        margin-top: 25px;
+    }
+
+    .book-button {
+        margin-top: 20px
+    }
+</style>
 

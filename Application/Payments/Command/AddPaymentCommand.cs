@@ -2,8 +2,10 @@
 using Application.Payments.Models;
 using Domain.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -27,7 +29,17 @@ namespace Application.Payments.Command
 
         public async Task<bool> Handle(AddPaymentCommand request, CancellationToken cancellationToken)
         {
-            //ToDo Need to be add Validation
+            var payments = await _dbContext.Payments
+                .Where(x => x.ParkingPlaceId == request.PaymentModel.ParkingPlaceId)
+                .ToListAsync();
+
+            var isFree = payments.Any(x => IsFreeForPeriod(x, request.PaymentModel.RentFrom, request.PaymentModel.RentTo));
+
+            if (!isFree)
+            {
+                return false;
+            }
+
             var entity = new Payment();
 
             entity.Amount = request.PaymentModel.Amount;
@@ -47,6 +59,10 @@ namespace Application.Payments.Command
 
                 return false;
             }
+        }
+        private bool IsFreeForPeriod(Payment payment, DateTime requestFrom, DateTime requestTo)
+        {
+            return !(requestFrom.Date >= payment.RentFrom.Value.Date && requestFrom.Date <= payment.RentTo.Value.Date) || !(requestTo.Date >= payment.RentFrom.Value.Date && requestTo.Date <= payment.RentTo.Value.Date);
         }
     }
 }

@@ -7,7 +7,6 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
 using Application.Payments.Models;
 using Application.Payments.Command;
-using System.Web;
 using Microsoft.AspNetCore.Identity;
 
 namespace Web.Controllers
@@ -36,8 +35,13 @@ namespace Web.Controllers
         public async Task<IActionResult> Payment([FromForm]PaymentModel paymentModel)
         {
             var userId = _userManager.GetUserId(HttpContext.User);
-            object res = await Mediator.Send(new AddPaymentCommand { PaymentModel = paymentModel, UserId = userId });
-            return RedirectToAction("GetAllParkingPlacesByParkingId", "Home", new { parkingId = paymentModel.ParkingId});
+            var result = await Mediator.Send<bool>(new AddPaymentCommand { PaymentModel = paymentModel, UserId = userId });
+            if (!result)
+            {
+                return View("Home");
+            }
+
+            return RedirectToAction("GetAllParkingPlacesByParkingId", "Home", new { parkingId = paymentModel.ParkingId, createPayment = true});
         }
     }
 }

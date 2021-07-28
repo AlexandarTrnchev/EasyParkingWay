@@ -16,6 +16,7 @@ namespace Infrastructure
         {
             if (!context.Cities.Any())
             {
+                var rols = new IdentityRole {Name = "" }
                 var user = new IdentityUser { UserName = "admin@abv.bg", Email = "admin@abv.bg" };
                 var result = await userManager.CreateAsync(user, "123456");
                 if (result.Succeeded)
