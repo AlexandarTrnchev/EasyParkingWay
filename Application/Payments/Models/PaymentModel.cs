@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Application.Common.Mappings;
+using Domain.Entities;
+using System;
 
 namespace Application.Payments.Models
 {
-    public class PaymentModel
+    public class PaymentModel : IMapFrom<Payment>
     {
         public string  City { get; set; }
 

@@ -9,6 +9,7 @@ using Application.Payments.Models;
 using Application.Payments.Command;
 using Microsoft.AspNetCore.Identity;
 using Infrastructure.Enums;
+using Application.Payments.Queries.GetAllPaymentQuery;
 
 namespace Web.Controllers
 {
@@ -43,6 +44,20 @@ namespace Web.Controllers
             }
 
             return RedirectToAction("GetAllParkingPlacesByParkingId", "Home", new { parkingId = paymentModel.ParkingId, createPayment="success" });
+        }
+
+        public async Task<IActionResult> GetAllPayments()
+        {
+            var userId = _userManager.GetUserId(HttpContext.User);
+            var result = await Mediator.Send(new GetAllPaymentsQuery {UserId = userId });
+
+            //if (!result)
+            //{
+            //    return RedirectToAction("Index", "Home");
+            //}
+
+            //return RedirectToAction("GetAllParkingPlacesByParkingId", "Home", new { parkingId = paymentModel.ParkingId, createPayment = "success" });
+            return null;
         }
     }
 }
