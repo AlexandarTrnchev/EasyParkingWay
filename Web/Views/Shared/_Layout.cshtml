@@ -1,4 +1,12 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Mvc
+@using Infrastructure.Enums
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@inject RoleManager<IdentityRole> RoleManager
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -19,14 +27,36 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
+                @if (User.IsInRole(nameof(IdentityRoleEnum.Admin)))
+                {
+                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ADMIN</a>
+                }
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">EasyParkingWay</a>
+
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <partial name="_LoginPartial" />
+
+
+
+
+
                     <ul class="navbar-nav flex-grow-1">
+                        @if (User.IsInRole(nameof(IdentityRoleEnum.Admin)))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" href="@Url.Action("GetAllPayments", "Admin", new { paymentId = ""})">Payments</a>
+                            </li>
+                        }
+                        else if (SignInManager.IsSignedIn(User))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" href="@Url.Action("GetAllPayments", "Payment")">My Payments</a>
+                            </li>
+                        }
+
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
@@ -35,6 +65,7 @@
                         </li>
                     </ul>
                 </div>
+                <partial name="_LoginPartial" />
             </div>
         </nav>
     </header>

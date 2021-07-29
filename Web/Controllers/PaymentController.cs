@@ -19,10 +19,10 @@ namespace Web.Controllers
         private IMediator _mediator;
         protected IMediator Mediator => _mediator ??= HttpContext.RequestServices.GetService<IMediator>();
 
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<PaymentController> _logger;
         private UserManager<IdentityUser> _userManager;
 
-        public PaymentController(ILogger<HomeController> logger, UserManager<IdentityUser> userManager)
+        public PaymentController(ILogger<PaymentController> logger, UserManager<IdentityUser> userManager)
         {
             _userManager = userManager;
             _logger = logger;
@@ -51,13 +51,7 @@ namespace Web.Controllers
             var userId = _userManager.GetUserId(HttpContext.User);
             var result = await Mediator.Send(new GetAllPaymentsQuery {UserId = userId });
 
-            //if (!result)
-            //{
-            //    return RedirectToAction("Index", "Home");
-            //}
-
-            //return RedirectToAction("GetAllParkingPlacesByParkingId", "Home", new { parkingId = paymentModel.ParkingId, createPayment = "success" });
-            return null;
+            return View(result);
         }
     }
 }

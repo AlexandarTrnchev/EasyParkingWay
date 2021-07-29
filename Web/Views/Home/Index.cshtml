@@ -1,11 +1,21 @@
-﻿@{
+﻿@using Infrastructure.Enums
+@{
     ViewData["Title"] = "Home Page";
 }
 
 @model Application.Cities.Models.CitiesListModel
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
+    @if (User.IsInRole(nameof(IdentityRoleEnum.Admin)))
+    {
+        <h1 class="display-4">Welcome ADMIN</h1>
+    }
+    else
+    {
+        <h1 class="display-4">Welcome</h1>
+
+    }
+
     <h3>Please choose city</h3>
     <br />
 </div>

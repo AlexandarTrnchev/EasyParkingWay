@@ -2,6 +2,7 @@
 using Application.Payments.Models;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -13,6 +14,7 @@ namespace Application.Payments.Queries.GetAllPaymentQuery
 {
     public class GetAllPaymentsQuery : IRequest<PaymentDtoListModel>
     {
+        public int? Id { get; set; }
         public string UserId { get; set; }
     }
 
@@ -31,40 +33,25 @@ namespace Application.Payments.Queries.GetAllPaymentQuery
         {
             var response = new PaymentDtoListModel();
 
-            if (string.IsNullOrEmpty(request.UserId))
+            var query =  _context.Payments
+                .Include(x => x.ParkingPlace)
+                .ThenInclude(x => x.Parking)
+                .OrderByDescending(x => x.Created);
+
+            if (request.Id != null)
             {
-                response.Payments = await _context
-                    .Payments
-                    .Include(x => x.ParkingPlace)
-                    .ThenInclude(x => x.Parking)
-                    .OrderByDescending(x =>x.Created)
-                    .Select(x => 
-                    new PaymentModel
-                    { 
-                        ParkingPlaceId = x.ParkingPlaceId,
-                        Address = x.ParkingPlace.Parking.Address,
-                        Amount = x.Amount,
-                        City = x.ParkingPlace.Parking.City.Name,
-                        ParkingId = x.ParkingPlace.ParkingId,
-                        ParkingName = x.ParkingPlace.Parking.Name,
-                        ParkingNumber = x.ParkingPlace.Number,
-                        RentFrom = (DateTime)x.RentFrom,
-                        RentTo = (DateTime)x.RentTo
-                    })
-                    .AsNoTracking()
-                    .ToListAsync();
+                query = (IOrderedQueryable<Payment>)query.Where(x => x.Id == request.Id);
             }
-            else
+
+            if (!string.IsNullOrEmpty(request.UserId))
             {
-                response.Payments = await _context
-                    .Payments
-                    .Where(x => x.UserId == request.UserId)
-                     .Include(x => x.ParkingPlace)
-                    .ThenInclude(x => x.Parking)
-                    .OrderByDescending(x => x.Created)
-                    .Select(x =>
+                query = (IOrderedQueryable<Payment>)query.Where(x => x.UserId == request.UserId);
+            }
+
+            response.Payments = await query.Select(x =>
                     new PaymentModel
                     {
+                        Id = x.Id,
                         ParkingPlaceId = x.ParkingPlaceId,
                         Address = x.ParkingPlace.Parking.Address,
                         Amount = x.Amount,
@@ -73,11 +60,11 @@ namespace Application.Payments.Queries.GetAllPaymentQuery
                         ParkingName = x.ParkingPlace.Parking.Name,
                         ParkingNumber = x.ParkingPlace.Number,
                         RentFrom = (DateTime)x.RentFrom,
-                        RentTo = (DateTime)x.RentTo
+                        RentTo = (DateTime)x.RentTo,
+                        CreatedDate = x.Created
                     })
                     .AsNoTracking()
                     .ToListAsync();
-            }
 
             return response;
         }

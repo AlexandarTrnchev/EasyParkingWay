@@ -1,11 +1,13 @@
-﻿using Application.Common.Mappings;
-using Domain.Entities;
-using System;
+﻿using System;
 
 namespace Application.Payments.Models
 {
-    public class PaymentModel : IMapFrom<Payment>
+    public class PaymentModel 
     {
+        public int Id { get; set; }
+
+        public string UserName  { get; set; }
+
         public string  City { get; set; }
 
         public string  ParkingName { get; set; }
@@ -23,5 +25,7 @@ namespace Application.Payments.Models
         public DateTime RentFrom { get; set; }
 
         public DateTime RentTo { get; set; }
+
+        public DateTime CreatedDate { get; set; }
     }
 }
