@@ -9,6 +9,8 @@ namespace Domain.Entities
 
         public string Address { get; set; }
 
+        public decimal PricePerParkingPlace { get; set; }
+
         public decimal longitude { get; set; }
 
         public decimal Latitude { get; set; }

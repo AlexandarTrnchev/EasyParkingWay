@@ -32,7 +32,9 @@
     <tbody>
         @foreach (var item in Model.Payments)
         {
+
             <tr class="data">
+
                 <td>@item.Id</td>
                 <td>@item.UserName</td>
                 <td>@item.CreatedDate.ToString("dd MMM yyyy")</td>
@@ -43,6 +45,11 @@
                 <td>@item.Amount</td>
                 <td>@item.RentFrom.ToString("dd MMM yyyy")</td>
                 <td>@item.RentTo.ToString("dd MMM yyyy")</td>
+                <td>
+                    <a href="/Home/GetAllParkingPlacesByParkingId?parkingId=@item.Id ">
+                        Edit
+                    </a>
+                </td>
             </tr>
         }
     </tbody>

@@ -80,7 +80,8 @@ namespace Infrastructure
                         Name = "Parking Sofia_1",
                         Created = DateTime.Now,
                         Address = "some street 29",
-                        City = sofia
+                        City = sofia,
+                        PricePerParkingPlace = 10.00M
                     };
 
                     var parkingSofia_2 = new Parking()
@@ -88,7 +89,8 @@ namespace Infrastructure
                         Name = "Parking Sofia_2",
                         Created = DateTime.Now,
                         Address = "some street 28",
-                        City = sofia
+                        City = sofia,
+                        PricePerParkingPlace = 15.00M
                     };
 
                     var parkingSofia_3 = new Parking()
@@ -96,7 +98,8 @@ namespace Infrastructure
                         Name = "Parking Sofia_3",
                         Created = DateTime.Now,
                         Address = "some street 30",
-                        City = sofia
+                        City = sofia,
+                        PricePerParkingPlace = 20.00M
                     };
 
                     var parkingPlovdiv = new Parking()
@@ -104,7 +107,8 @@ namespace Infrastructure
                         Name = "Parking Plovdiv",
                         Created = DateTime.Now,
                         Address = "some street 29",
-                        City = plovdiv
+                        City = plovdiv,
+                        PricePerParkingPlace = 8.00M
                     };
 
                     var parkingVarna = new Parking()
@@ -112,7 +116,8 @@ namespace Infrastructure
                         Name = "Parking Varna",
                         Created = DateTime.Now,
                         Address = "some street 29",
-                        City = varna
+                        City = varna,
+                        PricePerParkingPlace = 8.00M
                     };
 
                     await context.Parkings.AddRangeAsync(parkingSofia_1, parkingSofia_2, parkingSofia_3, parkingPlovdiv, parkingVarna);

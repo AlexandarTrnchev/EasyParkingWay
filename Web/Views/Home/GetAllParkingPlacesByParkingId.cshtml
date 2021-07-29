@@ -1,168 +1,189 @@
 ﻿@using Application.Payments.Models
 @model Application.ParkingPlaces.Models.ParkingPlaceDtoListModel
 
-@{ 
+@{
     var createPaymentSuccess = Context.Request.Query["createPayment"];
 }
 
 <input type="hidden" id="payment-success" value="@createPaymentSuccess" />
 
-<div class="text-center">
-    <h1 class="display-4">@Model.Parking?.City.Name</h1>
-    <h2 class="display-4">@Model.Parking?.Name</h2>
-    @if (Model.ParkingPlaces != null && Model.ParkingPlaces.Count > 0)
-    {
-        <h3>@Model.ParkingPlaces.Where(x => x.IsFree).Count() Free parking places</h3>
-    }
-    else
-    {
-        <h3 class="alert-danger">Not have available parking places in this city</h3>
-    }
-    <br />
-</div>
+<div class="row info">
+    <div class="col">
+        <label>city:</label>
+        <h4>@Model.Parking?.City.Name</h4>
 
-<button id="modal-button" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" hidden>
-    Open modal
-</button>
+        <label>parking name:</label>
+        <h4>@Model.Parking?.Name</h4>
 
-<!-- The Modal -->
-<div class="modal" id="myModal" >
-    <div class="modal-dialog" >
-        <div class="modal-content">
+        <label>price:</label>
+        <h4>@Model.Parking?.PricePerParkingPlace lv./day</h4>
 
-            <!-- Modal Header -->
-            <div class="modal-header">
-                <h4 class="modal-title">Success</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
+        <label>address:</label>
+        <h4>@Model.Parking?.Address</h4>
 
-            <!-- Modal body -->
-            <div class="modal-body">
-                You made successfully booking parking place!
-            </div>
-
-            <!-- Modal footer -->
-            <div class="modal-footer">
-                <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
-            </div>
-
-        </div>
-    </div>
-</div>
-<form asp-controller="Home" asp-action="GetAllParkingPlacesByParkingId" method="get">
-
-    <div class="row pb-5">
-        <input type="hidden" class="form-control" name="parkingId" value="@Model.Parking?.Id">
-        <div class="col-4">
-            <label>From</label>
-            <div class="input-group date" data-provide="datepicker">
-                <input type="text" class="form-control" name="from" value="@Model.From.ToShortDateString()">
-                <div class="input-group-addon">
-                    <span class="glyphicon glyphicon-th"></span>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-4">
-            <label>To</label>
-            <div class="input-group date" data-provide="datepicker">
-                <input type="text" class="form-control" name="to" value="@Model.To.ToShortDateString()">
-                <div class="input-group-addon">
-                    <span class="glyphicon glyphicon-th"></span>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-4">
-            <input type="submit" class="search-button btn btn-primary" value="Search" />
-            @*<a href="#" class="btn btn-primary">Search </a>*@
-        </div>
-    </div>
-</form>
-
-
-
-<div class="row">
-    @if (Model.ParkingPlaces != null)
-    {
-        @foreach (var item in Model.ParkingPlaces)
+        <label>available:</label>
+        @if (Model.ParkingPlaces != null && Model.ParkingPlaces.Count > 0)
         {
-            var backgroundStyle = item.IsFree ? "btn-success" : "btn-danger";
+            <h4> @Model.ParkingPlaces.Where(x => x.IsFree).Count() Free parking places</h4>
+        }
+        else
+        {
+            <h4 class="alert-danger">Not have available parking places in this city</h4>
+        }
 
-            <div class="col-6 " style="width: 18rem; margin-bottom: 25px;">
-                <div class="card">
-                    @*<img class="card-img-top" src="..." alt="Card image cap">*@
-                    <div class="card-body">
-                        <h5 class="card-title">Place number @item.Number</h5>
-                        @if (!item.IsFree)
-                        {
-                            <h5 class="card-text">This parking place is not free From @Model.From.ToShortDateString() To @Model.To.ToShortDateString()</h5>
-                        }
-                        else
-                        {
-                            <h5 class="card-text">This parking place is availavale for booking</h5>
-                        }
-                        @{
-                            var paymentModel = new PaymentModel
-                            {
-                                ParkingId = Model.Parking.Id,
-                                Address = Model.Parking.Address,
-                                Amount = 35,
-                                City = Model.Parking.City.Name,
-                                ParkingName = Model.Parking.Name,
-                                ParkingNumber = item.Number,
-                                RentFrom = Model.From,
-                                RentTo = Model.To,
-                                ParkingPlaceId = item.Id
-                            };
+    </div>
+    </div>
 
-                            var bookButtonUrl = item.IsFree ? Url.Action("Index", "Payment", paymentModel) : "";
-                        }
+    <button id="modal-button" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" hidden>
+        Open modal
+    </button>
 
-                        @if (item.IsFree)
-                        {
-                            <a href="@Url.Action("Index", "Payment", paymentModel)" class="book-button btn @backgroundStyle">Book your parking place</a>
-                        }
-                        else
-                        {
-                            <button class="book-button btn @backgroundStyle" disabled>This place is Not free</button>
-                        }
+    <!-- The Modal -->
+    <div class="modal" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Success</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    You made successfully booking parking place!
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <form asp-controller="Home" asp-action="GetAllParkingPlacesByParkingId" method="get">
+
+        <div class="row pb-5">
+            <input type="hidden" class="form-control" name="parkingId" value="@Model.Parking?.Id">
+            <div class="col-4">
+                <label>From</label>
+                <div class="input-group date" data-provide="datepicker">
+                    <input type="text" class="form-control" name="from" value="@Model.From.ToShortDateString()">
+                    <div class="input-group-addon">
+                        <span class="glyphicon glyphicon-th"></span>
                     </div>
                 </div>
             </div>
+
+            <div class="col-4">
+                <label>To</label>
+                <div class="input-group date" data-provide="datepicker">
+                    <input type="text" class="form-control" name="to" value="@Model.To.ToShortDateString()">
+                    <div class="input-group-addon">
+                        <span class="glyphicon glyphicon-th"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-4">
+                <input type="submit" class="search-button btn btn-primary" value="Search" />
+                @*<a href="#" class="btn btn-primary">Search </a>*@
+            </div>
+        </div>
+    </form>
+
+
+
+    <div class="row">
+        @if (Model.ParkingPlaces != null)
+        {
+            @foreach (var item in Model.ParkingPlaces)
+            {
+                var backgroundStyle = item.IsFree ? "btn-success" : "btn-danger";
+
+                <div class="col-6 " style="width: 18rem; margin-bottom: 25px;">
+                    <div class="card">
+                        @*<img class="card-img-top" src="..." alt="Card image cap">*@
+                        <div class="card-body">
+                            <h5 class="card-title">Place number @item.Number</h5>
+                            @if (!item.IsFree)
+                            {
+                                <h5 class="card-text">This parking place is not free From @Model.From.ToShortDateString() To @Model.To.ToShortDateString()</h5>
+                            }
+                            else
+                            {
+                                <h5 class="card-text">This parking place is availavale for booking</h5>
+                            }
+                            @{
+                                var amount = ((Model.To.DayOfYear - Model.From.DayOfYear) + 1) * Model.Parking.PricePerParkingPlace;
+                                var paymentModel = new PaymentModel
+                                {
+                                    ParkingId = Model.Parking.Id,
+                                    Address = Model.Parking.Address,
+                                    Amount = amount,
+                                    City = Model.Parking.City.Name,
+                                    ParkingName = Model.Parking.Name,
+                                    ParkingNumber = item.Number,
+                                    RentFrom = Model.From,
+                                    RentTo = Model.To,
+                                    ParkingPlaceId = item.Id
+                                };
+
+                                var bookButtonUrl = item.IsFree ? Url.Action("Index", "Payment", paymentModel) : "";
+                            }
+
+                            @if (item.IsFree)
+                            {
+                                <a href="@Url.Action("Index", "Payment", paymentModel)" class="book-button btn @backgroundStyle">Book your parking place</a>
+                            }
+                            else
+                            {
+                                <button class="book-button btn @backgroundStyle" disabled>This place is Not free</button>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
         }
-    }
 
-</div>
+    </div>
 
-<script>
-    let isSuccesseee = $("#payment-success").val();
-    let isSuccess = $("#payment-success").val() === "success";
+    <script>
+        let isSuccesseee = $("#payment-success").val();
+        let isSuccess = $("#payment-success").val() === "success";
 
-    $(document).ready(function () {
-        debugger;
-        if (isSuccess) {
-            $("#modal-button").click();
+        $(document).ready(function () {
+            if (isSuccess) {
+                $("#modal-button").click();
+            }
+        });
+    </script>
+
+
+    <style>
+        .search-button {
+            margin-top: 25px;
         }
-    });
-</script>
 
+        .book-button {
+            margin-top: 20px
+        }
 
-<style>
-    .search-button {
-        margin-top: 25px;
-    }
+        .modal-dialog {
+            position: unset;
+        }
 
-    .book-button {
-        margin-top: 20px
-    }
+        .modal-content {
+            background-color: lightgreen;
+        }
 
-    .modal-dialog {
-        position: unset;
-    }
+        .info {
+            margin-bottom: 25px;
+        }
 
-    .modal-content {
-        background-color: lightgreen;
-    }
-</style>
+        h4 {
+            margin-top: 0px !important;
+        }
+    </style>
 
