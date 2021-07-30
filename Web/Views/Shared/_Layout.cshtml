@@ -49,20 +49,26 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" href="@Url.Action("GetAllPayments", "Admin", new { paymentId = ""})">Payments</a>
                             </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" href="">Create Parking</a>
+                            </li>
+
                         }
                         else if (SignInManager.IsSignedIn(User))
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" href="@Url.Action("GetAllPayments", "Payment")">My Payments</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            </li>
                         }
 
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
+
                         @*<li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>*@
+            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </li>*@
                     </ul>
                 </div>
                 <partial name="_LoginPartial" />

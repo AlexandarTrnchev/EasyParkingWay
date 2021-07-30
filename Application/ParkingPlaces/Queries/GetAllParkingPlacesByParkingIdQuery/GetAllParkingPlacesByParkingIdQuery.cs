@@ -63,11 +63,9 @@ namespace Application.ParkingPlaces.Queries.GetAllParkingPlacesByParkingIdQuery
 
             foreach (var item in places)
             {
-                if (item.Payments.Any(x => IsFreeForPeriod(x, dates[0].Date, dates[1].Date)))
-                {
-                    item.IsFree = false;
-                }
-                else
+                var isInRange = item.Payments.Any(x => IsEnyDateIsInRangeIRequestPeriod(x, dates[0].Date, dates[1].Date));
+
+                if (!isInRange && !item.IsDeleted)
                 {
                     item.IsFree = true;
                 }
@@ -82,9 +80,15 @@ namespace Application.ParkingPlaces.Queries.GetAllParkingPlacesByParkingIdQuery
             };
         }
 
-        private bool IsFreeForPeriod(Payment payment, DateTime requestFrom, DateTime requestTo)
+        //private bool IsFreeForPeriod(Payment payment, DateTime requestFrom, DateTime requestTo)
+        //{
+        //    return (requestFrom.Date > payment.RentTo.Value.Date || requestFrom.Date < payment.RentFrom.Value.Date) && (requestTo.Date > payment.RentTo.Value.Date || requestTo.Date < payment.RentFrom.Value.Date);
+        //}
+
+        private bool IsEnyDateIsInRangeIRequestPeriod(Payment payment, DateTime requestFrom, DateTime requestTo)
         {
-            return (requestFrom.Date >= payment.RentFrom.Value.Date && requestFrom.Date <= payment.RentTo.Value.Date) || (requestTo.Date >= payment.RentFrom.Value.Date && requestTo.Date <= payment.RentTo.Value.Date);
+            return (requestFrom.Date >= payment.RentFrom.Value.Date && requestFrom.Date <= payment.RentTo.Value.Date) 
+                || (requestTo.Date >= payment.RentFrom.Value.Date && requestTo.Date <= payment.RentTo.Value.Date);
         }
     }
 }

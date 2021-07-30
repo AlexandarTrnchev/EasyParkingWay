@@ -30,23 +30,14 @@ namespace Application.Payments.Command
         public async Task<bool> Handle(AddPaymentCommand request, CancellationToken cancellationToken)
         {
             var payments = await _dbContext.Payments
-                .Where(x => x.ParkingPlaceId == request.PaymentModel.ParkingPlaceId)
+                .Where(x => x.ParkingPlaceId == request.PaymentModel.ParkingPlaceId && !x.IsDeleted)
                 .ToListAsync();
-            var isFree = false;
 
-            if (payments.Count > 0)
-            {
-               isFree = payments.Any(x => IsFreeForPeriod(x, request.PaymentModel.RentFrom, request.PaymentModel.RentTo));
-            }
-            else
-            {
-                isFree = true;
-            }
+            var isInRange = payments.Any(x => IsEnyDateIsInRangeIRequestPeriod(x, request.PaymentModel.RentFrom.Date, request.PaymentModel.RentFrom.Date));
 
-
-            if (!isFree)
+            if (isInRange)
             {
-                return false;
+                throw new Exception("Invalid Date Range");
             }
 
             var entity = new Payment();
@@ -69,9 +60,15 @@ namespace Application.Payments.Command
                 return false;
             }
         }
-        private bool IsFreeForPeriod(Payment payment, DateTime requestFrom, DateTime requestTo)
+        //private bool IsFreeForPeriod(Payment payment, DateTime requestFrom, DateTime requestTo)
+        //{
+        //    return (requestFrom.Date > payment.RentTo.Value.Date || requestFrom.Date < payment.RentFrom.Value.Date) && (requestTo.Date > payment.RentTo.Value.Date || requestTo.Date < payment.RentFrom.Value.Date);
+        //}
+
+        private bool IsEnyDateIsInRangeIRequestPeriod(Payment payment, DateTime requestFrom, DateTime requestTo)
         {
-            return !(requestFrom.Date >= payment.RentFrom.Value.Date && requestFrom.Date <= payment.RentTo.Value.Date) || !(requestTo.Date >= payment.RentFrom.Value.Date && requestTo.Date <= payment.RentTo.Value.Date);
+            return (requestFrom.Date >= payment.RentFrom.Value.Date && requestFrom.Date <= payment.RentTo.Value.Date)
+                || (requestTo.Date >= payment.RentFrom.Value.Date && requestTo.Date <= payment.RentTo.Value.Date);
         }
     }
 }
