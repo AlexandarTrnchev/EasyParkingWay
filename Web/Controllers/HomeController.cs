@@ -47,6 +47,7 @@ namespace EasyParkingWay.Controllers
         {
             //ToDo:
             object res = await Mediator.Send(new GetAllParkingsByCityIdQuery { CityId = cityId});
+            
             return View(res);
         }
         

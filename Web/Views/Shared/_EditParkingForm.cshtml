@@ -1,0 +1,34 @@
+﻿@model Application.Parkings.Models.ParkingDto
+
+
+<form asp-controller="Admin" asp-action="EditParking" method="post" class="form">
+    <input type="hidden" name="parkingId" value="@Model.Id" />
+    <div class="form-group">
+        <label asp-for="City"></label>
+        <input type="text" class="form-control" value="@Model.City.Name" disabled />
+    </div>
+
+    <div class="form-group">
+        @*<label>parking name:</label>
+            <input type="text" name="name" class="form-control" value="@Model.Parking?.Name" />*@
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" placeholder="Enter name" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="PricePerParkingPlace"></label>
+        <input asp-for="PricePerParkingPlace" class="form-control" placeholder="Enter price" />
+        <span asp-validation-for="PricePerParkingPlace" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Address"></label>
+        <input asp-for="Address" class="form-control" placeholder="Enter address" />
+        <span asp-validation-for="Address" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" class="btn btn-primary" value="Save" />
+    </div>
+</form>

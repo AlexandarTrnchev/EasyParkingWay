@@ -1,0 +1,28 @@
+﻿@model Application.ParkingPlaces.Models.ParkingPlaceDto
+
+
+    <div class="row info">
+        <div class="col">
+            <form asp-controller="Admin" asp-action="GetAllPayments" method="get">
+                <div class="row">
+                    <div class="form-group">
+                        <label>Number:</label>
+                        <input type="number" name="number" class="form-control" value="@Model.Number" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Is deleted:</label>
+                        <input type="checkbox" name="isDeleted" class="form-control" value="@Model.IsDeleted" />
+                    </div>
+
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-primary form-control" value="Search" />
+                    </div>
+                    <div class="form-group">
+                        <input type="button" class="btn btn-primary form-control" value="Cancel" />
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>

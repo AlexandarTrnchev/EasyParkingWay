@@ -11,6 +11,11 @@ using System;
 using Application.ParkingPlaces.Queries.GetAllParkingPlacesByParkingIdQuery;
 using Application.Parkings.Models;
 using Application.Parkings.Commands;
+using Application.ParkingPlaces.Queries;
+using Application.ParkingPlaces.Models;
+using Application.ParkingPlaces.Commands;
+using Microsoft.AspNetCore.Identity.UI.V3.Pages.Internal;
+using Application.Cities.Queries.GetAllCitiesQuery;
 
 namespace Web.Controllers
 {
@@ -44,9 +49,51 @@ namespace Web.Controllers
         [HttpPost]
         public async Task<IActionResult> EditParking(int parkingId, ParkingEditDto data)
         {
+            if (!ModelState.IsValid)
+            {
+                return Redirect("\\");
+            }
             int res = await Mediator.Send(new EditParkingCommand { Id = parkingId, ParkingEditData = data });
 
             return RedirectToAction("GetAllParkingPlacesByParkingId", "Admin", new { parkingId = res});
         }
+
+        //Not Use
+        public async Task<IActionResult> GetParkingPlace (int id )
+        {
+            object res = await Mediator.Send(new GetParkingPlaceQuery { Id = id });
+            return View(res);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditParkingPlace(EditParkingPlaceModel data)
+        {
+            int res = await Mediator.Send(new EditParkingPlaceCommand { Data = data });
+
+            return  RedirectToAction("GetAllParkingPlacesByParkingId", "Admin", new { parkingId = data.ParkingId });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AddParking()
+        {
+            var cities = await Mediator.Send(new GetAllCitiesQuery());
+            ViewData["Cities"] = cities;
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddParking(AddParkingModel data)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(data);
+            }
+            
+            int newParkingId = await Mediator.Send(new AddParkingCommand { Data = data});
+
+
+            return RedirectToAction("GetAllParkingPlacesByParkingId", "Admin", new { parkingId = newParkingId });
+        }
+        
     }
 }

@@ -11,6 +11,8 @@ namespace Domain.Entities
 
         public string UserId { get; set; }
 
+        public string UserName { get; set; }
+
         public DateTime? RentFrom { get; set; }
 
         public DateTime? RentTo { get; set; }

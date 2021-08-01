@@ -1,5 +1,7 @@
 ﻿@using Application.Payments.Models
 @using Microsoft.AspNetCore.Identity
+@using Application.ParkingPlaces.Models
+
 @using Microsoft.AspNetCore.Mvc
 @using Infrastructure.Enums
 @model Application.ParkingPlaces.Models.ParkingPlaceDtoListModel
@@ -14,43 +16,20 @@
 
 <div class="row info">
     <div class="col">
-        <form asp-controller="Admin" asp-action="EditParking" method="post" class="form">
-            <input type="hidden" name="parkingId" value="@Model.Parking?.Id" />
-            <div class="form-group">
-                <label>city:</label>
-                <input type="text" class="form-control" value="@Model.Parking?.City.Name" disabled />
-            </div>
+    
+        <partial name="_EditParkingForm" model="Model.Parking">
 
-            <div class="form-group">
-                <label>parking name:</label>
-                <input type="text" name="name" class="form-control" value="@Model.Parking?.Name" />
-            </div>
+            <label>available:</label>
+            @if (Model.ParkingPlaces != null && Model.ParkingPlaces.Count > 0)
+            {
+                <h4> @Model.ParkingPlaces.Where(x => x.IsFree).Count() Free parking places</h4>
+            }
+            else
+            {
+                <h4 class="alert-danger">Not have available parking places in this city</h4>
+            }
 
-            <div class="form-group">
-                <label>price $:</label>
-                <input type="text" name="pricePerParkingPlace" class="form-control" value="@Model.Parking?.PricePerParkingPlace" />
-            </div>
-
-            <div class="form-group">
-                <label>address:</label>
-                <input type="text" name="address" class="form-control" value="@Model.Parking?.Address" />
-            </div>
-
-            <div class="form-group">
-                <input type="submit" class="btn btn-primary" value="Save" />
-            </div>
-        </form>
-        <label>available:</label>
-        @if (Model.ParkingPlaces != null && Model.ParkingPlaces.Count > 0)
-        {
-            <h4> @Model.ParkingPlaces.Where(x => x.IsFree).Count() Free parking places</h4>
-        }
-        else
-        {
-            <h4 class="alert-danger">Not have available parking places in this city</h4>
-        }
-
-    </div>
+</div>
 </div>
 
 <button id="modal-button" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" hidden>
@@ -124,9 +103,27 @@
 
             <div class="col-6 " style="width: 18rem; margin-bottom: 25px;">
                 <div class="card">
-                    @*<img class="card-img-top" src="..." alt="Card image cap">*@
                     <div class="card-body">
-                        <h5 class="card-title">Place number @item.Number</h5>
+                        <div class="row">
+                            <div class="col">
+                                <form asp-controller="Admin" asp-action="EditParkingPlace" method="post" class="form">
+
+                                    <input type="hidden" name="id" value="@item.Id">
+                                    <input type="hidden" name="parkingId" value="@Model.Parking.Id">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <label>Number:</label>
+                                            <input type="number" class="form-control " name="number" value="@item.Number">
+                                        </div>
+                                        <div class="col action">
+                                            <button type="submit" class="btn btn-link">Edit</button>
+                                            <button href="@Url.Action("Admin", "Payment","")" class="btn btn-link">Delete</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
                         @if (!item.IsFree)
                         {
                             <h5 class="card-text">This parking place is not free From @Model.From.ToShortDateString() To @Model.To.ToShortDateString()</h5>
@@ -163,14 +160,15 @@
                             <button class="book-button btn @backgroundStyle" disabled>This place is Not free</button>
                         }
 
-                        @if (!item.IsDeleted)
-                        {
-                            <a href="@Url.Action("Admin", "Payment", paymentModel)" class="book-button btn btn-secondary">Deactivate</a>
-                        }
-                        else
-                        {
-                            <a href="@Url.Action("Admin", "Payment", paymentModel)" class="book-button btn btn-danger">Activate</a>
-                        }
+
+                        @*@if (!item.IsDeleted)
+        {
+            <a href="@Url.Action("Admin", "Payment", paymentModel)" class="book-button btn btn-secondary">Deactivate</a>
+        }
+        else
+        {
+            <a href="@Url.Action("Admin", "Payment", paymentModel)" class="book-button btn btn-danger">Activate</a>
+        }*@
                     </div>
                 </div>
             </div>
@@ -215,5 +213,15 @@
     h4 {
         margin-top: 0px !important;
     }
+
+    a {
+        margin: 5px;
+    }
+
+    .action {
+        text-align: end;
+    }
+
+  
 </style>
 

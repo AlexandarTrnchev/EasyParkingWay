@@ -43,6 +43,7 @@ namespace Application.Payments.Command
             var entity = new Payment();
 
             entity.Amount = request.PaymentModel.Amount;
+            entity.UserName = request.PaymentModel.UserName;
             entity.ParkingPlaceId = request.PaymentModel.ParkingPlaceId;
             entity.RentFrom = request.PaymentModel.RentFrom;
             entity.RentTo = request.PaymentModel.RentTo;

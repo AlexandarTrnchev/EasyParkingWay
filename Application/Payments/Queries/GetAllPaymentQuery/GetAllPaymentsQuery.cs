@@ -52,6 +52,7 @@ namespace Application.Payments.Queries.GetAllPaymentQuery
                     new PaymentModel
                     {
                         Id = x.Id,
+                        UserName = x.UserName,
                         ParkingPlaceId = x.ParkingPlaceId,
                         Address = x.ParkingPlace.Parking.Address,
                         Amount = x.Amount,

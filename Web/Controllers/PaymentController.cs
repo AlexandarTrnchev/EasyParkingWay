@@ -37,10 +37,17 @@ namespace Web.Controllers
         public async Task<IActionResult> Payment([FromForm]PaymentModel paymentModel)
         {
             var userId = _userManager.GetUserId(HttpContext.User);
+            paymentModel.UserName = HttpContext.User.Identity.Name;
+
             var result = await Mediator.Send<bool>(new AddPaymentCommand { PaymentModel = paymentModel, UserId = userId });
             if (!result)
             {
                 return RedirectToAction("Index", "Home");
+            }
+            if (User.IsInRole(nameof(IdentityRoleEnum.Admin)))
+            {
+                return RedirectToAction("GetAllParkingPlacesByParkingId", "Admin", new { parkingId = paymentModel.ParkingId, createPayment = "success" });
+
             }
 
             return RedirectToAction("GetAllParkingPlacesByParkingId", "Home", new { parkingId = paymentModel.ParkingId, createPayment="success" });

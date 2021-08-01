@@ -1,0 +1,76 @@
+﻿@model Application.Parkings.Models.AddParkingModel
+
+@using Application.Cities.Models
+
+@{
+    var cities = ViewData["Cities"] as CitiesListModel;
+}
+<div class="row info">
+    <div class="col">
+        <form id="MyForm" asp-controller="Admin" asp-action="AddParking" method="post" class="form">
+            @Html.AntiForgeryToken()
+            <div class="form-group">
+                <label>City</label>
+                <div class="dropdown">
+                    <input id="city" type="hidden" name="city" />
+                    <select name="cityId" id="city-dropdown" class="btn btn-light">
+                        @foreach (var item in cities.Cities)
+                        {
+                            <option value="@item.Id" class="dropdown dropdown-item">@item.Name</option>
+                        }
+                    </select>
+                </div>
+                <span asp-validation-for="CityId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Name"></label>
+                <input asp-for="Name" class="form-control" placeholder="Enter name" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="NumberParkingPlaces"></label>
+                <input asp-for="NumberParkingPlaces" class="form-control" placeholder="Enter Number Parking Places" />
+                <span asp-validation-for="NumberParkingPlaces" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="PricePerParkingPlace"></label>
+                <input asp-for="PricePerParkingPlace" class="form-control" placeholder="Enter Price per parking place" />
+                <span asp-validation-for="PricePerParkingPlace" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Address"></label>
+                <input asp-for="Address" class="form-control" placeholder="Enter Address" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" name="submit" class="btn btn-primary" value="Add" />
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        $("#city").val() = $("#city-dropdown").val()
+    });
+
+    var ss = $("#city-dropdown").change(function () {
+
+        verificarForm();
+        $("#city").val() = $("#city-dropdown").val()
+    });
+
+    function verificarForm() {
+        var valid = $("#MyForm").valid();
+        if (valid) {
+            $('#btnSalvar').prop("disabled", false);
+        }
+    }
+</script>

@@ -10,9 +10,9 @@ namespace Application.ParkingPlaces.Models
 
         public int Number { get; set; }
 
-        public bool IsFree { get; set; }
-
         public List<Payment> Payments { get; set; }
+
+        public bool IsFree { get; set; }
 
         public bool IsDeleted { get; set; }
     }
